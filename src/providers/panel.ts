@@ -10,6 +10,7 @@ export class ProvenancePanel {
   private disposables: vscode.Disposable[] = [];
   private pinnedFunctionId: string | undefined;
   private lastFunctionId: string | undefined;
+  private lastEditor: vscode.TextEditor | undefined;
 
   static show(
     extensionUri: vscode.Uri,
@@ -75,7 +76,13 @@ export class ProvenancePanel {
 
   refresh(): void {
     const store = this.getStore();
-    const editor = vscode.window.activeTextEditor;
+    const currentEditor = vscode.window.activeTextEditor;
+    // When the webview panel itself has focus, activeTextEditor is undefined.
+    // Keep showing the last known editor state instead of blanking.
+    if (currentEditor) {
+      this.lastEditor = currentEditor;
+    }
+    const editor = currentEditor ?? this.lastEditor;
     if (!store || !editor) {
       this.panel.webview.html = this.emptyHtml();
       return;
