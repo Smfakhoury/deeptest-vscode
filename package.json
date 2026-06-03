@@ -1,0 +1,96 @@
+{
+  "name": "deeptest-provenance",
+  "displayName": "DeepTest Provenance",
+  "description": "Visualize spec ↔ code ↔ test ↔ bug provenance from DeepTest analysis",
+  "version": "0.1.0",
+  "publisher": "microsoft",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "extensionDependencies": [
+    "github.copilot-chat"
+  ],
+  "categories": [
+    "Testing",
+    "Linters",
+    "Chat"
+  ],
+  "activationEvents": [
+    "workspaceContains:.deeptest/report/provenance.json"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "deeptest-provenance.deeptest",
+        "fullName": "DeepTest",
+        "name": "deeptest",
+        "description": "Review and refine specifications, explore bugs, and negotiate behavioral claims for your code",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "specs",
+            "description": "Show specifications for a function"
+          },
+          {
+            "name": "bugs",
+            "description": "Show all bugs found by DeepTest"
+          },
+          {
+            "name": "review",
+            "description": "Start a behavior review session for the current function"
+          }
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "deeptest.refresh",
+        "title": "DeepTest: Refresh Provenance"
+      },
+      {
+        "command": "deeptest.showProvenance",
+        "title": "DeepTest: Show Provenance for Current Line"
+      },
+      {
+        "command": "deeptest.openPanel",
+        "title": "DeepTest: Open Provenance Panel"
+      },
+      {
+        "command": "deeptest.showClaimDetail",
+        "title": "DeepTest: Show Claim Detail"
+      }
+    ],
+    "configuration": {
+      "title": "DeepTest Provenance",
+      "properties": {
+        "deeptest.provenancePath": {
+          "type": "string",
+          "default": ".deeptest/report/provenance.json",
+          "description": "Workspace-relative path to provenance.json"
+        },
+        "deeptest.showGutterIcons": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show gutter icons for specs, hazards, and bugs"
+        },
+        "deeptest.showCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show CodeLens summaries above functions"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.120.0",
+    "typescript": "^5.3.0"
+  }
+}
